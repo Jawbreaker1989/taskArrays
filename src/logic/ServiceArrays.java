@@ -19,7 +19,7 @@ public class ServiceArrays {
     private static final int SIZE_DEFAULT = 10;
 
     /**
-     * Constructor vacio
+     * Constructor vació
      */
     public ServiceArrays(int beggin, int end) {
         // TODO Instanciar el arreglo de un tamaño de 10 elemetos
@@ -96,13 +96,16 @@ public class ServiceArrays {
      * @return
      */
     public String showNumbers() {
-        StringBuffer sb = new StringBuffer("[");
-        for (int i = 0; i < numbers.length; i++) {
-            sb.append(numbers[i] + ",");
+        int lastIndex = position - 1;
+
+        // Encontrar el índice del último elemento no cero
+        while (lastIndex >= 0 && numbers[lastIndex] == 0) {
+            lastIndex--;
         }
-        String aux = sb.substring(0, sb.length() - 1);
-        aux += "]";
-        return aux.toString();
+
+        int[] nonZeroArray = Arrays.copyOfRange(numbers, 0, lastIndex + 1);
+
+        return Arrays.toString(nonZeroArray);
     }
 
     /**
@@ -121,17 +124,18 @@ public class ServiceArrays {
 
     /**
      *
-     * @param size
      * @return
      */
 
     public int getMin() {
-        int min = numbers[0];
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] < min) {
+        int min = Integer.MAX_VALUE;
+
+        for (int i = 0; i < position; i++) {
+            if (numbers[i] != 0 && numbers[i] < min) {
                 min = numbers[i];
             }
         }
+
         return min;
     }
 
@@ -159,6 +163,18 @@ public class ServiceArrays {
             sum += numbers[i];
         }
         return sum;
+    }
+
+    /**
+     * @return El promedio de los elementos en el arreglo
+     */
+    public double getAverage() {
+        int sum = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
+        }
+
+        return (double) sum / numbers.length;
     }
 
 }
