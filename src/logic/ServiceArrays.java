@@ -1,4 +1,4 @@
-package logic;
+﻿package logic;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -11,7 +11,8 @@ public class ServiceArrays {
     private int[] numbers;
     // variable que controla la posición del siguiente elemento
     private int position;
-    public static final int BUBBLE = 0;
+
+    public static final int BURBBLE = 0;
     public static final int SELECTION = 1;
     public static final int INSERTION = 2;
     public static final int SHELL = 3;
@@ -123,6 +124,32 @@ public class ServiceArrays {
     }
 
     /**
+     * Búsqueda binaria en el arreglo ordenado.
+     * 
+     * @param element Elemento a buscar.
+     * @return Índice del elemento si se encuentra, -1 si no se encuentra.
+     */
+    public int findBinary(int element) {
+        int[] sortedArray = sortBurbble();
+        int left = 0;
+        int right = position - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (sortedArray[mid] == element) {
+                return mid;
+            } else if (element < sortedArray[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
      *
      * @return
      */
@@ -176,5 +203,144 @@ public class ServiceArrays {
 
         return (double) sum / numbers.length;
     }
+
+    private int[] sortBurbble() {
+        int[] sorted = Arrays.copyOf(numbers, position);
+        int n = sorted.length;
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+            for (int i = gap; i < n; i++) {
+                int temp = sorted[i];
+                int j;
+                for (j = i; j >= gap && sorted[j - gap] > temp; j -= gap) {
+                    sorted[j] = sorted[j - gap];
+                }
+                sorted[j] = temp;
+            }
+        }
+        return sorted;
+    }
+
+    public int[] sortNumbers(int option) {
+        switch (option) {
+            case BURBBLE:
+                return sortBurbble();
+            case SELECTION:
+                return sortSelection();
+            case INSERTION:
+                return sortInsertion();
+            case SHELL:
+                return sortShell();
+
+            default:
+                return null;
+        }
+    }
+
+    private int[] sortSelection() {
+        int[] sorted = Arrays.copyOf(numbers, position);
+        for (int i = 0; i < sorted.length; i++) {
+            int min = i;
+            for (int j = i + 1; j < sorted.length; j++) {
+                if (sorted[j] < sorted[min]) {
+                    min = j;
+                }
+            }
+            int temp = sorted[i];
+            sorted[i] = sorted[min];
+            sorted[min] = temp;
+        }
+        return sorted;
+    }
+
+    /**
+     * Ordena el arreglo utilizando el algoritmo de ordenación por inserción.
+     * 
+     * @return Arreglo ordenado.
+     */
+    private int[] sortInsertion() {
+        int[] sorted = Arrays.copyOf(numbers, position);
+
+        for (int i = 1; i < sorted.length; i++) {
+            int key = sorted[i];
+            int j = i - 1;
+
+            while (j >= 0 && sorted[j] > key) {
+                sorted[j + 1] = sorted[j];
+                j = j - 1;
+            }
+
+            sorted[j + 1] = key;
+        }
+
+        return sorted;
+    }
+
+    /**
+     * Ordena el arreglo utilizando el algoritmo de ordenación Shell.
+     * 
+     * @return Arreglo ordenado.
+     */
+    private int[] sortShell() {
+        int[] sorted = Arrays.copyOf(numbers, position);
+        int size = sorted.length;
+        int jump = size / 2;
+
+        while (jump != 0) {
+            jump = jump / 2;
+            boolean cambios = true;
+
+            while (cambios) {
+                cambios = false;
+
+                for (int j = jump; j < size; j++) {
+                    if (sorted[j - jump] > sorted[j]) {
+                        // Intercambiar elementos
+                        int temp = sorted[j];
+                        sorted[j] = sorted[j - jump];
+                        sorted[j - jump] = temp;
+                        cambios = true;
+                    }
+                }
+            }
+        }
+
+        return sorted;
+    }
+
+    /**
+     * Elimina un elemento del arreglo
+     * 
+     * @param element elemento a eliminar
+     * @return el elemento eliminado, -1 si no se encuentra en el arreglo
+     */
+    public int delete(int element) {
+        int index = findElement(element);
+        if (index != -1) {
+            int deletedElement = numbers[index];
+            for (int i = index; i < position - 1; i++) {
+                numbers[i] = numbers[i + 1];
+            }
+            numbers[position - 1] = 0;
+            position--;
+            return deletedElement;
+        }
+        return -1;
+    }
+    /**
+ * Reemplaza un elemento del arreglo por otro.
+ *
+ * @param oldElement elemento a reemplazar
+ * @param newElement nuevo elemento
+ * @return el arreglo con el elemento reemplazado, o null si el elemento no se encuentra en el arreglo
+ */
+public int[] replace(int oldElement, int newElement) {
+    int index = findElement(oldElement);
+    if (index != -1) {
+        numbers[index] = newElement;
+        return Arrays.copyOf(numbers, position);
+    }
+    return null;
+}
+
 
 }
