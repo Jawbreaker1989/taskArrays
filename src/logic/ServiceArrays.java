@@ -341,6 +341,41 @@ public int[] replace(int oldElement, int newElement) {
     }
     return null;
 }
+/**
+ * Calcula el producto punto entre el arreglo actual y otro arreglo dado.
+ *
+ * @param secondArray Arreglo con el que se calculará el producto punto.
+ * @return Producto punto entre los dos arreglos.
+ */
+public int getProductoPoint(int[] secondArray) {
+    if (secondArray.length != position) {
+        throw new IllegalArgumentException("Arrays must have the same length for calculating the dot product.");
+    }
 
+    int dotProduct = 0;
+    for (int i = 0; i < position; i++) {
+        dotProduct += numbers[i] * secondArray[i];
+    }
 
+    return dotProduct;
 }
+/**
+     * Genera un segundo arreglo aleatorio con la misma longitud que el arreglo actual,
+     * con elementos en el rango entre 10 y 999.
+     *
+     * @return Segundo arreglo generado aleatoriamente.
+     */
+    public int[] secondArray() {
+        int[] randomArray = new int[position];
+        Random random = new Random();
+
+        for (int i = 0; i < position; i++) {
+            randomArray[i] = random.nextInt(990) + 10; 
+        }
+
+        return randomArray;
+    }
+
+    }
+
+

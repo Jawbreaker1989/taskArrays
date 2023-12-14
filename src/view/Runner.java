@@ -1,7 +1,6 @@
 package view;
 
 import logic.ServiceArrays;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -95,7 +94,8 @@ public class Runner {
             System.out.println("9. Get Average");
             System.out.println("10. Delete element from the array");
             System.out.println("11. Replace element in the array");
-            System.out.println("12. Exit to main menu");
+            System.out.println("12. Calculate Dot Product with second array");
+            System.out.println("13. Exit to main menu");
             System.out.print("Enter your choice: ");
 
             operationChoice = scanner.nextInt();
@@ -142,22 +142,18 @@ public class Runner {
                     case 6:
                         // Get Min
                         System.out.println("Minimum value in the array: " + serviceArrays.getMin());
-                        System.out.println("Current Array: " + serviceArrays.showNumbers());
                         break;
                     case 7:
                         // Get Max
                         System.out.println("Maximum value in the array: " + serviceArrays.getMax());
-                        System.out.println("Current Array: " + serviceArrays.showNumbers());
                         break;
                     case 8:
                         // Get Sum
                         System.out.println("Sum of elements in the array: " + serviceArrays.getSum());
-                        System.out.println("Current Array: " + serviceArrays.showNumbers());
                         break;
                     case 9:
                         // Get Average
                         System.out.println("Average of elements in the array: " + serviceArrays.getAverage());
-                        System.out.println("Current Array: " + serviceArrays.showNumbers());
                         break;
                     case 10:
                         // Delete element from the array
@@ -178,14 +174,25 @@ public class Runner {
                         System.out.print("Enter new element: ");
                         int newElement = scanner.nextInt();
                         int[] replacedArray = serviceArrays.replace(oldElement, newElement);
-                        System.out.println("Current Array: " + serviceArrays.showNumbers());
                         if (replacedArray != null) {
                             System.out.println("Element replaced. Updated Array: " + Arrays.toString(replacedArray));
                         } else {
                             System.out.println("Element not found in the array.");
                         }
                         break;
+
                     case 12:
+                        // Get Producto Point with Second Array
+                        try {
+                            int[] ppArray = serviceArrays.secondArray();
+                            int productoPoint = serviceArrays.getProductoPoint(ppArray);
+                            System.out.println("Second Array for Producto Point: " + Arrays.toString(ppArray));
+                            System.out.println("Producto Point: " + productoPoint);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                        break;
+                    case 13:
                         System.out.println("Exiting to main menu.");
                         break;
                     default:
@@ -194,12 +201,11 @@ public class Runner {
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-                scanner.nextLine(); 
+                scanner.nextLine();
             }
-
-        } while (operationChoice != 12);
+        } while (operationChoice != 13);
     }
-
+    //sort menu
     private static void sortMenu(Scanner scanner, ServiceArrays serviceArrays) {
         System.out.println("Sort Menu:");
         System.out.println("1. Bubble Sort");
@@ -218,7 +224,6 @@ public class Runner {
                 case 4:
                     int[] sortedArray = serviceArrays.sortNumbers(sortChoice - 1);
                     System.out.println("Array sorted. Updated Array: " + Arrays.toString(sortedArray));
-                    System.out.println("Current Array: " + serviceArrays.showNumbers());
                     break;
                 default:
                     System.out.println("Invalid sort option.");
@@ -226,7 +231,9 @@ public class Runner {
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            scanner.nextLine(); 
+            scanner.nextLine();
         }
+
     }
+
 }
